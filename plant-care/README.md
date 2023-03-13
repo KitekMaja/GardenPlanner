@@ -1,4 +1,4 @@
-# **PLANT CARE TRACKER SERVICE**
+# **PLANT CARE SERVICE**
 
 ## **SERVICE DESCRIPTION**
 This microservice helps users keep track of when to water, fertilize, and prune their plants. Users can set up custom schedules for each plant species, and the microservice can send reminders via email or push notification when it's time to perform each task.
