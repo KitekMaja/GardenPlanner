@@ -6,53 +6,123 @@
 # Date: 2023-04-28
 #
 
-# PostgreSQL database details
-DB_USER = "postgres"
-DB_NAME = "plants"
-
 # PostgreSQL installation check
-if ! command -v psql &> /dev/null
+if ! command psql -V &> /dev/null
 then
     echo "PostgreSQL is not installed on this machine. Please install it first."
     exit 1
 fi
 
-# Database creation
-echo "-- Creating database -- \n"
-./migrations/create_plant_database.sql
-echo "-- Done -- \n"
+# Defining database connection parameters
+PGDATABASE="plants"
+PGUSER="postgres"
+export PGPASSWORD="admin"
 
-# Enum creation
-echo "-- Creating enum values -- \n"
-./migrations/create_enum_values.sql
-echo "-- Done -- \n"
+# Check if the database already exists
+if psql -U $PGUSER -lqt | cut -d \| -f 1 | grep -wq $PGDATABASE; then
+  echo "Database '$PGDATABASE' already exists. Deleting existing database."
+  dropdb -U $PGUSER $PGDATABASE
+fi
 
-# Table creation
-echo "-- Creating tables -- \n "
+# Create the database
+createdb -U $PGUSER $PGDATABASE
 
-echo "-- create scientific classification table -- \n"
-./migrations/create_scientific_classification_table.sql
+# Check if the creation was successful
+if [ $? -eq 0 ]; then
+  echo "Database '$PGDATABASE' created successfully."
+else
+  echo "Failed to create database '$PGDATABASE'."
+  exit 1
+fi
 
-echo "-- create plant conditions table -- \n"
-./migrations/create_plant_conditions_table.sql
+# Changing directory
+cd ../migrations
 
-echo "-- create plant characteristics table -- \n"
-./migrations/create_plant_characteristics_table.sql
+# Connecting to database and running queries
+psql -U $PGUSER -d $PGDATABASE << EOF
+-- drop tables
+\i drop_tables.sql
 
-echo "-- create care guide table -- \n"
-./migrations/create_care_guide_table.sql
+-- create genus table
+\i create_genus_table.sql
 
-echo "-- create basic plant info table -- \n"
-./migrations/create_basic_plant_info_table.sql
+-- create class table
+\i create_class_table.sql
 
-echo "-- Done -- \n"
+-- create order table
+\i create_order_table.sql
 
-# Constraints creation
-echo "-- Creating constraints -- \n "
-./migrations/create_constraints.sql
-echo "-- Done -- \n"
+-- create family table
+\i create_family_table.sql
 
-# Filling database with data
-echo "-- Database fill -- \n "
-./migrations/fill_data.sql
-echo "-- Done -- \n"
+-- create phylum table
+\i create_phylum_table.sql
+
+-- create scientific classification table
+\i create_scientific_classification_table.sql
+
+-- create habitat table
+\i create_habitat_table.sql
+
+-- create plant table
+\i create_plant_table.sql
+
+-- create lifespan table
+\i create_lifespan_table.sql
+
+-- create plant lifespan
+\i create_plant_lifespan_table.sql
+
+-- create plant part
+\i create_plant_part_table.sql
+
+-- create color table
+\i create_color_table.sql
+
+-- create plant part color
+\i create_plant_part_color_table.sql
+
+-- create plant type table
+\i create_plant_type_table.sql
+
+-- create propagation techniques table
+\i create_propagation_techniques_table.sql
+
+-- create seasons table
+\i create_seasons_table.sql
+
+-- create plant time table
+\i create_plant_time_table.sql
+
+-- create plant types table
+\i create_plant_types_table.sql
+
+-- create plant propagation table
+\i create_plant_propagation_table.sql
+
+-- create plant time season table
+\i create_plant_time_season_table.sql
+
+-- create plant names table
+\i create_plant_names_table.sql
+
+-- create soil types table
+\i create_soil_types_table.sql
+
+-- create sunglight types
+\i create_sunlight_types_table.sql
+
+-- create hardiness zones table
+\i create_hardiness_zones_table.sql
+
+-- create plant soil table
+\i create_plant_soil_table.sql
+
+-- create plant sunlight conditions table
+\i create_plant_sunlight_conditions_table.sql
+
+-- create plant hardiness zone table
+\i create_plant_hardiness_zone_table.sql
+EOF
+
+echo "-- DONE --"
