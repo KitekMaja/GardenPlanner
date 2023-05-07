@@ -4,20 +4,6 @@ const express = require('express');
 // Create an instance of Express
 const app = express();
 
-const { Client } = require('pg');
-
-const client = new Client({
-  host: 'localhost',
-  port: 5432,
-  user: 'postgres',
-  password: 'admin',
-  database: 'plants',
-});
-
-client.connect()
-  .then(() => console.log('Connected to PostgreSQL database'))
-  .catch(err => console.error('Error connecting to PostgreSQL database', err));
-
 // Define an endpoint
 app.get('/', (req, res) => {
   res.send('Hello, world!');
