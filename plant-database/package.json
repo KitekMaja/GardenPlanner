@@ -1,0 +1,28 @@
+{
+  "name": "plant-care",
+  "version": "1.0.0",
+  "description": "This microservice helps users keep track of when to water, fertilize, and prune their plants. Users can set up custom schedules for each plant species, and the microservice can send reminders via email or push notification when it's time to perform each task.",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KitekMaja/GardenPlanner.git#main"
+  },
+  "keywords": [
+    "plant",
+    "care",
+    "plantcare"
+  ],
+  "author": "Maja Kitek",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KitekMaja/GardenPlanner/issues"
+  },
+  "homepage": "https://github.com/KitekMaja/GardenPlanner/tree/main#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "pg": "^8.10.0"
+  }
+}
