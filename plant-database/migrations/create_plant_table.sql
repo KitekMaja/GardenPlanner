@@ -23,7 +23,7 @@ CREATE TABLE plant (
    potting_suggestions TEXT,
    difficulty_description TEXT,
    fk_scientific_classification SERIAL NOT NULL,
-   fk_habitat_id SERIAL,
+   fk_habitat_id SERIAL NOT NULL,
    CONSTRAINT fk_scientific_classification FOREIGN KEY (fk_scientific_classification) REFERENCES scientific_classification (classification_id) ON DELETE CASCADE,
    CONSTRAINT fk_habitat_id FOREIGN KEY (fk_habitat_id) REFERENCES habitat (habitat_id) ON DELETE CASCADE
 );

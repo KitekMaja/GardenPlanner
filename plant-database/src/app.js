@@ -1,6 +1,9 @@
 // Import Express
 const express = require('express');
 
+// Import routes
+const plantRoute = require('../src/routes/plant_info/plantRoutes');
+
 // Create an instance of Express
 const app = express();
 
@@ -8,6 +11,10 @@ const app = express();
 app.get('/', (req, res) => {
   res.send('Hello, world!');
 });
+
+// Use routes
+
+app.use('/plantAPI/v1/', plantRoute);
 
 // Start the server
 app.listen(1000, () => {
