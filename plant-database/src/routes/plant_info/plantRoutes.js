@@ -11,8 +11,10 @@ const plantController = require('../../controllers/plant_info/plantController');
 
 // Define routes
 router.get('/plants', plantController.getAllPlants);
+router.get('/plants/:plantName', plantController.getPlantByName);
+router.get('/plants/classification/:classificationId', plantController.getPlantsByClassification);
+router.get('/plants/habitat/:habitatId', plantController.getPlantsByHabitat);
 router.post('/addPlant', plantController.createPlant);
-router.get('/plants/:id', plantController.getPlantByName);
-router.put('/updatePlant/:id', plantController.updatePlant);
+router.put('/updatePlant/:plantName', plantController.updatePlant);
 
 module.exports = router;

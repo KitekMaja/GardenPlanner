@@ -44,7 +44,7 @@ const TIMES = "[ times ]";
 const INVALID_JSON = "Invalid parameteres in request body";
 const INVALID_QUERY_PARAMETER = "Invalid query parameter";
 
-const PLANT_ALREADY_EXISTS = "Plant with this botanical name already exists"
+const ALREADY_EXISTS = " already exists";
 
 module.exports = {
     RETURN_ERROR,
@@ -72,5 +72,5 @@ module.exports = {
     TIME, TIMES,
     INVALID_JSON,
     INVALID_QUERY_PARAMETER,
-    PLANT_ALREADY_EXISTS
+    ALREADY_EXISTS
 };

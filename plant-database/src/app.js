@@ -2,7 +2,8 @@
 const express = require('express');
 
 // Import routes
-const plantRoute = require('../src/routes/plant_info/plantRoutes');
+const plantRoutes = require('../src/routes/plant_info/plantRoutes');
+const habitatRoutes = require('../src/routes/plant_info/habitatRoutes');
 
 // Create an instance of Express
 const app = express();
@@ -13,8 +14,8 @@ app.get('/', (req, res) => {
 });
 
 // Use routes
-
-app.use('/plantAPI/v1/', plantRoute);
+app.use('/plantAPI/v1/', plantRoutes);
+app.use('/habitatAPI/v1/', habitatRoutes);
 
 // Start the server
 app.listen(1000, () => {

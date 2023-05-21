@@ -43,41 +43,7 @@ exports.getAllPlants = async (req, res) =>
     } 
     catch (error) 
     {
-        res.status(statusCode.HTTP_INTERNAL_SERVER_ERROR).json({ error: errorMessages.RETURN_ERROR + errorMessages.PLANTS});
-    }
-};
-
-exports.createPlant = async (req, res) =>
-{
-    const { botanical_name, poisonous, description, 
-        min_plant_temperature, max_plant_temperature, 
-        interesting_fact, symbolism, plant_height, 
-        spread, flower_size, watering_information, 
-        fertilization_information, pruning, 
-        potting_suggestions, difficulty_description, 
-        fk_scientific_classification, fk_habitat_id } = req.body;
-
-    try 
-    {
-        const { error, value } = plantSchema.validate(req.body);     
-        if (error) 
-        {
-            res.status(statusCode.HTTP_BAD_REQUEST).json({ message: errorMessages.INVALID_JSON });
-        } 
-        else 
-        {
-            const existingPlant = await plantQuery.getPlant(botanical_name);
-            if (existingPlant) 
-            {
-                return res.status(statusCode.HTTP_CONFLICT).json({ message: errorMessages.PLANT_ALREADY_EXISTS });
-            }
-            const newPlant = await plantQuery.createPlant(value);
-            res.status(statusCode.HTTP_CREATED).json({ message: successMessages.CREATED_SUCCESSFULLY, plant: newPlant });    
-        }
-    } 
-    catch (err) 
-    {
-        res.status(statusCode.HTTP_INTERNAL_SERVER_ERROR).json({ message: errorMessages.CREATE_ERROR + errorMessages.PLANT });
+        res.status(statusCode.HTTP_INTERNAL_SERVER_ERROR).json({ message: error });
     }
 };
 
@@ -89,53 +55,118 @@ exports.getPlantByName = async (req, res) =>
         const { error, value } = Joi.string().validate(botanical_name);  
         if (error)
         {
-            res.status(statusCode.HTTP_BAD_REQUEST).json({ message: errorMessages.INVALID_QUERY_PARAMETER });
+            res.status(statusCode.HTTP_BAD_REQUEST).json({ message: errorMessages.INVALID_QUERY_PARAMETER + " = " + error});
         }
-        else
+        
+        const plant = await plantQuery.getPlant(value);
+        if (!plant) 
         {
-            const plant = await plantQuery.getPlant(botanical_name);
-            if (!plant) 
-            {
-                return res.status(statusCode.HTTP_NOT_FOUND).json({ message: botanical_name + errorMessages.NOT_FOUND_ERROR });
-            }
-            res.status(statusCode.HTTP_OK).json(plant);
+            return res.status(statusCode.HTTP_NOT_FOUND).json({ message: value + errorMessages.NOT_FOUND_ERROR });
         }
+        res.status(statusCode.HTTP_OK).json(plant);
     }
     catch (error)
     {
-        res.status(statusCode.HTTP_INTERNAL_SERVER_ERROR).json({ error: errorMessages.RETURN_ERROR + errorMessages.PLANT});
+        res.status(statusCode.HTTP_INTERNAL_SERVER_ERROR).json({ message: error });
+    }
+};
+
+exports.getPlantsByClassification = async (req, res) =>
+{
+    try
+    {
+        const { classification_id } = req.params;
+        const { error, value } = Joi.integer().validate(classification_id);
+        if (error)
+        {
+            res.status(statusCode.HTTP_BAD_REQUEST).json({ message: errorMessages.INVALID_QUERY_PARAMETER + " = " + error});
+        }
+
+        const plants = await plantQuery.getPlantsByClassificationId(value);
+        if (!plants) 
+        {
+            return res.status(statusCode.HTTP_NOT_FOUND).json({ message: value + errorMessages.NOT_FOUND_ERROR });
+        }
+        res.status(statusCode.HTTP_OK).json(plants);
+    }
+    catch (error)
+    {
+        res.status(statusCode.HTTP_INTERNAL_SERVER_ERROR).json({ message: error });
+    }
+};
+
+exports.getPlantsByHabitat = async (req, res) =>
+{
+    try
+    {
+        const { habitat_id } = req.params;
+        const { error, value } = Joi.integer().validate(habitat_id);
+        if (error)
+        {
+            res.status(statusCode.HTTP_BAD_REQUEST).json({ message: errorMessages.INVALID_QUERY_PARAMETER + " = " + error});
+        }
+
+        const plants = await plantQuery.getPlantsByHabitatId(value);
+        if (!plants)
+        {
+            return res.status(statusCode.HTTP_NOT_FOUND).json({ message: value + errorMessages.NOT_FOUND_ERROR });
+        }
+        res.status(HTTP_OK).json(plants);
+    }
+    catch (error)
+    {
+        res.status(statusCode.HTTP_INTERNAL_SERVER_ERROR).json({ message: error});
+    }
+};
+
+exports.createPlant = async (req, res) =>
+{
+    const body = req.body;
+    try 
+    {
+        const { error, value } = plantSchema.validate(body);     
+        if (error) 
+        {
+            res.status(statusCode.HTTP_BAD_REQUEST).json({ message: errorMessages.INVALID_JSON + " = " + error });
+        } 
+
+        const { botanical_name } = value;
+        const existingPlant = await plantQuery.getPlant(botanical_name);
+        if (existingPlant) 
+        {
+            return res.status(statusCode.HTTP_CONFLICT).json({ message: errorMessages.PLANT + errorMessages.ALREADY_EXISTS });
+        }
+        const newPlant = await plantQuery.createPlant(value);
+        res.status(statusCode.HTTP_CREATED).json({ message: successMessages.CREATED_SUCCESSFULLY, plant: newPlant });    
+        
+    } 
+    catch (error) 
+    {
+        res.status(statusCode.HTTP_INTERNAL_SERVER_ERROR).json({ message: error });
     }
 };
 
 exports.updatePlant = async (req, res) => 
 {
-    const { botanical_name, poisonous, description, 
-        min_plant_temperature, max_plant_temperature, 
-        interesting_fact, symbolism, plant_height, 
-        spread, flower_size, watering_information, 
-        fertilization_information, pruning, 
-        potting_suggestions, difficulty_description, 
-        fk_scientific_classification, fk_habitat_id } = req.body;
-
+    const body = req.body;
     try 
     {
-        const { error, value } = plantSchema.validate(req.body);     
+        const { error, value } = plantSchema.validate(body);     
         if (error) 
         {
-            res.status(statusCode.HTTP_BAD_REQUEST).json({ message: errorMessages.INVALID_JSON });
+            res.status(statusCode.HTTP_BAD_REQUEST).json({ message: errorMessages.INVALID_JSON + " = " + error });
         } 
-        else 
+
+        const { botanical_name } = value;
+        const updatePlant = await plantQuery.updatePlant(botanical_name, value);
+        if (!updatePlant) 
         {
-            const updatePlant = await plantQuery.updatePlant(botanical_name, value);
-            if (!updatePlant) 
-            {
-                return res.status(statusCode.HTTP_NOT_FOUND).json({ message: botanical_name + errorMessages.NOT_FOUND_ERROR });
-            }
-            res.status(statusCode.HTTP_OK).json({ message: successMessages.UPDATED_SUCCESFULLY, plant: updatePlant });
+            return res.status(statusCode.HTTP_NOT_FOUND).json({ message: botanical_name + errorMessages.NOT_FOUND_ERROR });
         }
+        res.status(statusCode.HTTP_OK).json({ message: successMessages.UPDATED_SUCCESFULLY, plant: updatePlant });
     } 
-    catch (err) 
+    catch (error) 
     {
-        res.status(statusCode.HTTP_INTERNAL_SERVER_ERROR).json({ message: errorMessages.UPDATE_ERROR + errorMessages.PLANTS });
+        res.status(statusCode.HTTP_INTERNAL_SERVER_ERROR).json({ message: error });
     }
 };

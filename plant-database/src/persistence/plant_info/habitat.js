@@ -64,25 +64,8 @@ async function getHabitatById(habitatId)
     }
 };
 
-async function updateHabitat(habitatId, updates)
-{
-    try
-    {
-        const[habitat, [updatedhabitat]] = await Habitat.update(updates, {
-            where: {habitat_id: habitatId},
-            returning: true
-        });
-        return updatedhabitat.toJSON();
-    }
-    catch (error)
-    {
-        throw new Error(errorMessages.UPDATE_ERROR + errorMessages.HABITAT);
-    }
-};
-
 module.exports = {
     createHabitat,
-    updateHabitat,
     getHabitats,
     getHabitatById,
     getHabitatByName

@@ -83,7 +83,7 @@ async function getPlantsByClassificationId(classificationId)
     }
 };
 
-async function getPlantsByHabitat(habitatId)
+async function getPlantsByHabitatId(habitatId)
 {
     try
     {
@@ -105,5 +105,5 @@ module.exports = {
     getPlant,
     getPlants,
     getPlantsByClassificationId,
-    getPlantsByHabitat
+    getPlantsByHabitatId
 };
