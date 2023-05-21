@@ -53,7 +53,7 @@ async function updatePlantZone(plantZoneId, updates)
     try
     {
         const[zone, [updatedPlantZone]] = await PlantHardinessZone.update(updates, {
-            where: {plant_zone_id: plantZoneId},
+            where: {plant_hardiness_zone_id: plantZoneId},
             returning: true
         });
         return updatedPlantZone.toJSON();
@@ -64,9 +64,43 @@ async function updatePlantZone(plantZoneId, updates)
     }
 };
 
+async function getPlantZonesByPlantId(plantId)
+{
+    try
+    {
+        const plantZones = await PlantHardinessZone.findAll({
+            where: {fk_plant_id: plantId},
+            returning: true
+          });
+        return plantZones.map((zones) => zones.toJSON());
+    }
+    catch (error)
+    {
+        throw new Error(errorMessages.RETURN_ERROR + errorMessages.PLANT + errorMessages.ZONES);
+    }
+};
+
+async function getPlantsByZoneId(zoneId)
+{
+    try
+    {
+        const plantZones = await PlantHardinessZone.findAll({
+            where: {fk_hardiness_zone: zoneId},
+            returning: true
+          });
+        return plantZones.map((zones) => zones.toJSON());
+    }
+    catch (error)
+    {
+        throw new Error(errorMessages.RETURN_ERROR + errorMessages.PLANTS);
+    }
+};
+
 module.exports = {
     getPlantZoneById,
     getPlantZones,
     createPlantZone,
-    updatePlantZone
+    updatePlantZone,
+    getPlantZonesByPlantId,
+    getPlantsByZoneId
 };

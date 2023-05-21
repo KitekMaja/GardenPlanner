@@ -64,9 +64,43 @@ async function updateSunlightConditions(sunlightId, updates)
     }
 };
 
+async function getSunlightByPlantId(plantId)
+{
+    try
+    {
+        const sunlightConditions = await PlantSunlight.findAll({
+            where: {fk_plant_id: plantId},
+            returning: true
+          });
+        return sunlightConditions.map((sunlight) => sunlight.toJSON());
+    }
+    catch (error)
+    {
+        throw new Error(errorMessages.RETURN_ERROR + errorMessages.PLANT + errorMessages.SUNLIGHT_TYPES);
+    }
+};
+
+async function getPlantsBySunlightId(sunlightId)
+{
+    try
+    {
+        const plants = await PlantSunlight.findAll({
+            where: {fk_sunlight_id: sunlightId},
+            returning: true
+          });
+        return plants.map((plant) => plant.toJSON());
+    }
+    catch (error)
+    {
+        throw new Error(errorMessages.RETURN_ERROR + errorMessages.PLANTS);
+    }
+};
+
 module.exports = {
     getSunlightConditions,
     getSunlightConditionsById,
     createSunlightConditions,
-    updateSunlightConditions
+    updateSunlightConditions,
+    getSunlightByPlantId,
+    getPlantsBySunlightId
 };

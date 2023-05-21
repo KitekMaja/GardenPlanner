@@ -64,9 +64,26 @@ async function updatePlantName(plantNameId, updates)
     }
 };
 
+async function getPlantNameByPlantId(plantId)
+{
+    try
+    {
+        const plantNames = await PlantName.findAll({
+            where: {fk_plant_id: plantId},
+            returning: true
+          });
+        return plantNames.map((names) => names.toJSON());
+    }
+    catch (error)
+    {
+        throw new Error(errorMessages.RETURN_ERROR + errorMessages.PLANT + errorMessages.PLANT_NAMES);
+    }
+};
+
 module.exports = {
     createPlantName,
     updatePlantName,
     getPlantNameById,
-    getPlantNames
+    getPlantNames,
+    getPlantNameByPlantId
 };

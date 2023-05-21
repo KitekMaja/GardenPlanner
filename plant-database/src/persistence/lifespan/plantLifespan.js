@@ -64,9 +64,43 @@ async function updatePlantLifespan(lifespanId, updates)
     }
 };
 
+async function getPlantLifespanByPlantId(plantId)
+{
+    try
+    {
+        const plantLifespans = await PlantLifespan.findAll({
+            where: {fk_plant_id: plantId},
+            returning: true
+          });
+        return plantLifespans.map((plants) => plants.toJSON());
+    }
+    catch (error)
+    {
+        throw new Error(errorMessages.RETURN_ERROR + errorMessages.PLANT + errorMessages.LIFESPANS);
+    }
+};
+
+async function getPlantsByLifespanId(lifespanId)
+{
+    try
+    {
+        const plantZones = await PlantLifespan.findAll({
+            where: {fk_lifespan_id: lifespanId},
+            returning: true
+          });
+        return plantZones.map((lifespans) => lifespans.toJSON());
+    }
+    catch (error)
+    {
+        throw new Error(errorMessages.RETURN_ERROR + errorMessages.PLANT + errorMessages.LIFESPANS);
+    }
+};
+
 module.exports = {
     getPlantLifespanById,
     getPlantLifespans,
     createPlantLifespan,
-    updatePlantLifespan
+    updatePlantLifespan,
+    getPlantLifespanByPlantId,
+    getPlantsByLifespanId
 };

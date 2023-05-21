@@ -64,9 +64,63 @@ async function updatePlantTimeSeason(plantTimeSeasonId, updates)
     }
 };
 
+async function getTimeByPlantId(plantId)
+{
+    try
+    {
+        const times = await PlantTimeSeason.findAll({
+            where: {fk_plant_id: plantId},
+            returning: true
+          });
+        return times.map((time) => time.toJSON());
+    }
+    catch (error)
+    {
+        throw new Error(errorMessages.RETURN_ERROR + errorMessages.PLANT + errorMessages.TIMES);
+    }
+};
+
+async function getPlantsByTimeId(timeId)
+{
+    try
+    {
+        const plants = await PlantTimeSeason.findAll({
+            where: {fk_plant_time: timeId},
+            returning: true
+          });
+        return plants.map((plant) => plant.toJSON());
+    }
+    catch (error)
+    {
+        throw new Error(errorMessages.RETURN_ERROR + errorMessages.PLANTS);
+    }
+};
+
+async function getPlantSeasonTimes(seasonId, timeId)
+{
+    try
+    {
+        const plants = await PlantTimeSeason.findAll({
+            where: {
+                fk_plant_time: timeId,
+                fk_season_id: seasonId
+            },
+            returning: true
+          });
+        return plants.map((plant) => plant.toJSON());
+    }
+    catch (error)
+    {
+        throw new Error(errorMessages.RETURN_ERROR + errorMessages.PLANTS);
+    }
+};
+
 module.exports = {
     createPlantTimeSeason,
     getPlantTimeSeasonById,
     getPlantTimeSeasons,
-    updatePlantTimeSeason
+    updatePlantTimeSeason,
+    getPlantSeasonTimes,
+    getTimeByPlantId,
+    getPlantsByTimeId
 };

@@ -18,7 +18,7 @@ async function getPartColors()
     }
     catch (error)
     {
-        throw new Error(errorMessages.RETURN_ERROR + errorMessages.PLANT + errorMessages.COLORS);
+        throw new Error(errorMessages.RETURN_ERROR + errorMessages.PARTS + errorMessages.COLORS);
     }
 };
 
@@ -31,7 +31,7 @@ async function createPartColor(partColorData)
     }
     catch (error)
     {
-        throw new Error (errorMessages.CREATE_ERROR + errorMessages.PLANT + errorMessages.COLOR);
+        throw new Error (errorMessages.CREATE_ERROR + errorMessages.PART + errorMessages.COLOR);
     }
 };
 
@@ -44,7 +44,7 @@ async function getPartColorById(partColorId)
     }
     catch (error)
     {
-        throw new Error (errorMessages.RETURN_ERROR + errorMessages.PLANT + errorMessages.COLOR);
+        throw new Error (errorMessages.RETURN_ERROR + errorMessages.PART + errorMessages.COLOR);
     }
 };
 
@@ -60,7 +60,26 @@ async function updatePartColor(partColorId, updates)
     }
     catch (error)
     {
-        throw new Error(errorMessages.UPDATE_ERROR + errorMessages.PLANT + errorMessages.COLOR);
+        throw new Error(errorMessages.UPDATE_ERROR + errorMessages.PART + errorMessages.COLOR);
+    }
+};
+
+async function getColoredParts(colorId, partId)
+{
+    try
+    {
+        const partColors = await PartColor.findAll({
+            where: {
+                fk_color_id: colorId,
+                fk_plant_part_id: partId
+            },
+            returning: true
+          });
+        return partColors.map((part) => part.toJSON());
+    }
+    catch (error)
+    {
+        throw new Error(errorMessages.RETURN_ERROR + errorMessages.PART + errorMessages.COLOR);
     }
 };
 
@@ -68,5 +87,6 @@ module.exports = {
     getPartColorById,
     getPartColors,
     createPartColor,
-    updatePartColor
+    updatePartColor,
+    getColoredParts
 };

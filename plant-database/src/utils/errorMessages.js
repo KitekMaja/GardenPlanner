@@ -36,6 +36,10 @@ const PLANT_PART = "[ plant part ]";
 const PLANT_PARTS = "[ plant parts ]";
 const TECHNIQUE = "[ technique ]";
 const TECHNIQUES = "[ techniques ]";
+const PART = "[ part ]";
+const PARTS = "[ parts ]";
+const TIME = "[ time ]";
+const TIMES = "[ times ]";
 
 const INVALID_JSON = "Invalid parameteres in request body";
 const INVALID_QUERY_PARAMETER = "Invalid query parameter";
@@ -64,6 +68,8 @@ module.exports = {
     PLANT_NAME, PLANT_NAMES,
     PLANT_PART, PLANT_PARTS,
     TECHNIQUE, TECHNIQUES,
+    PART, PARTS,
+    TIME, TIMES,
     INVALID_JSON,
     INVALID_QUERY_PARAMETER,
     PLANT_ALREADY_EXISTS

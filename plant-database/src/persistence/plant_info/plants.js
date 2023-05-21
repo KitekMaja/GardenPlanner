@@ -67,9 +67,43 @@ async function updatePlant(plantName, updates)
     }
 }
 
+async function getPlantsByClassificationId(classificationId)
+{
+    try
+    {
+        const plants = await Plant.findAll({
+            where: {fk_scientific_classification: classificationId},
+            returning: true
+          });
+        return plants.map((plant) => plant.toJSON());
+    }
+    catch (error)
+    {
+        throw new Error(errorMessages.RETURN_ERROR + errorMessages.PLANTS);
+    }
+};
+
+async function getPlantsByHabitat(habitatId)
+{
+    try
+    {
+        const plants = await Plant.findAll({
+            where: {fk_habitat_id: habitatId},
+            returning: true
+          });
+        return plants.map((plant) => plant.toJSON());
+    }
+    catch (error)
+    {
+        throw new Error(errorMessages.RETURN_ERROR + errorMessages.PLANTS);
+    }
+};
+
 module.exports = {
     createPlant,
     updatePlant,
     getPlant,
-    getPlants
+    getPlants,
+    getPlantsByClassificationId,
+    getPlantsByHabitat
 };
