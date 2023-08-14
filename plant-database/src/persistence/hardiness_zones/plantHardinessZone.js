@@ -40,6 +40,11 @@ async function getPlantZoneById(plantZoneId)
     try
     {
         const zone = await PlantHardinessZone.findByPk(plantZoneId);
+        if(!zone)
+        {
+            return null;
+            
+        }
         return zone.toJSON();
     }
     catch (error)

@@ -9,7 +9,7 @@
 const { PlantName } = require('../../models/plant_info/plantNamesModel');
 const errorMessages = require('../../utils/errorMessages');
 
-async function getPlantNames()
+async function getAllPlantNames()
 {
     try
     {
@@ -48,6 +48,22 @@ async function getPlantNameById(plantNameId)
     }
 };
 
+async function getPlantName(plantName)
+{
+    try
+    {
+        const name = await PlantName.findOne({
+            where: { name: plantName },
+            returning: true
+        });
+        return name.toJSON();
+    }
+    catch(error)
+    {
+        throw new Error (errorMessages.RETURN_ERROR + errorMessages.PLANT_NAME);
+    }
+};
+
 async function updatePlantName(plantNameId, updates)
 {
     try
@@ -64,26 +80,27 @@ async function updatePlantName(plantNameId, updates)
     }
 };
 
-async function getPlantNameByPlantId(plantId)
+async function getPlantNames(plant_id)
 {
     try
     {
-        const plantNames = await PlantName.findAll({
-            where: {fk_plant_id: plantId},
+        const name = await PlantName.findAll({
+            where: { plant_name_id: plant_id },
             returning: true
-          });
-        return plantNames.map((names) => names.toJSON());
+        });
+        return name.toJSON();
     }
-    catch (error)
+    catch(error)
     {
-        throw new Error(errorMessages.RETURN_ERROR + errorMessages.PLANT + errorMessages.PLANT_NAMES);
+        throw new Error (errorMessages.RETURN_ERROR + errorMessages.PLANT_NAME);
     }
 };
 
 module.exports = {
     createPlantName,
     updatePlantName,
+    getAllPlantNames,
     getPlantNameById,
     getPlantNames,
-    getPlantNameByPlantId
+    getPlantName
 };
