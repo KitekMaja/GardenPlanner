@@ -1,9 +1,13 @@
 package feri.ita.plantdatabase.model.hardiness_zones;
 
+import feri.ita.plantdatabase.model.plant.PlantModel;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -21,4 +25,6 @@ public class HardinessZoneModel {
     private Float minTemperature;
     @Column(name = "max_temperature", nullable = false)
     private Float maxTemperature;
+    @ManyToMany(mappedBy = "plantHardinessZones")
+    private Set<PlantModel> plants = new HashSet<>();
 }

@@ -1,9 +1,13 @@
 package feri.ita.plantdatabase.model.propagation;
 
+import feri.ita.plantdatabase.model.plant.PlantModel;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -17,4 +21,8 @@ public class PropagationTechniqueModel {
     private long propagationTechniqueId;
     @Column(name = "propagation_technique_name", nullable = false)
     private String propagationTechniqueName;
+    @Column(name = "propagation_technique_description", nullable = false)
+    private String description;
+    @ManyToMany(mappedBy = "plantPropagationTechniques")
+    private Set<PlantModel> plants = new HashSet<>();
 }
