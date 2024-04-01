@@ -1,9 +1,13 @@
 package feri.ita.plantdatabase.model.soil;
 
+import feri.ita.plantdatabase.model.plant.PlantModel;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -17,4 +21,6 @@ public class SoilTypeModel {
     private Long soilTypeId;
     @Column(name = "soil_type_name", nullable = false)
     private String soilTypeName;
+    @ManyToMany(mappedBy = "plantSoilTypes")
+    private Set<PlantModel> plants = new HashSet<>();
 }

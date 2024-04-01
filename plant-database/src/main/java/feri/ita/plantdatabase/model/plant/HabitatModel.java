@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,4 +20,6 @@ public class HabitatModel {
     private Long habitatId;
     @Column(name = "habitat_name", nullable = false)
     private String habitatName;
+    @ManyToMany(mappedBy = "plantHabitats")
+    private Set<PlantModel> plants = new HashSet<>();
 }

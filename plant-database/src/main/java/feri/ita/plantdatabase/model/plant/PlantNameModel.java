@@ -18,7 +18,4 @@ public class PlantNameModel {
     @Column(name = "plant_name", nullable = false)
     private String plantName;
     private String story;
-    @ManyToOne
-    @JoinColumn(name = "plant_id")
-    private PlantModel plant;
 }
