@@ -2,9 +2,12 @@ package feri.ita.plantdatabase.dao.part_color.impl;
 
 import feri.ita.plantdatabase.dao.part_color.IColorRepository;
 import feri.ita.plantdatabase.dto.part_color.ColorDTO;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
+@Repository
+@Transactional
 public class ColorRepository implements IColorRepository {
     /**
      * @param id

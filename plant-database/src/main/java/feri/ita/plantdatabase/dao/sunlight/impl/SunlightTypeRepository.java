@@ -2,9 +2,13 @@ package feri.ita.plantdatabase.dao.sunlight.impl;
 
 import feri.ita.plantdatabase.dao.sunlight.ISunlightTypeRepository;
 import feri.ita.plantdatabase.dto.sunlight.SunlightTypeDTO;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Repository
+@Transactional
 public class SunlightTypeRepository implements ISunlightTypeRepository {
     /**
      * @param id

@@ -2,9 +2,13 @@ package feri.ita.plantdatabase.dao.part_color.impl;
 
 import feri.ita.plantdatabase.dao.part_color.IPartRepository;
 import feri.ita.plantdatabase.dto.part_color.PartDTO;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Repository
+@Transactional
 public class PartRepository implements IPartRepository {
 
     /**

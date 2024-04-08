@@ -2,9 +2,13 @@ package feri.ita.plantdatabase.dao.plant.impl;
 
 import feri.ita.plantdatabase.dao.plant.IPlantNameRepository;
 import feri.ita.plantdatabase.dto.plant.PlantNameDTO;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Repository
+@Transactional
 public class PlantNameRepository implements IPlantNameRepository {
     /**
      * @param id

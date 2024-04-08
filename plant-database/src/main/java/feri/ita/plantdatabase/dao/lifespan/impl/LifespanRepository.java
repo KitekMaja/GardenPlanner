@@ -2,9 +2,12 @@ package feri.ita.plantdatabase.dao.lifespan.impl;
 
 import feri.ita.plantdatabase.dao.lifespan.ILifespanRepository;
 import feri.ita.plantdatabase.dto.lifespan.LifespanDTO;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
+@Repository
+@Transactional
 public class LifespanRepository implements ILifespanRepository {
     /**
      * @param id

@@ -2,9 +2,12 @@ package feri.ita.plantdatabase.dao.plant.impl;
 
 import feri.ita.plantdatabase.dao.plant.IHabitatRepository;
 import feri.ita.plantdatabase.dto.plant.HabitatDTO;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
+@Repository
+@Transactional
 public class HabitatRepository implements IHabitatRepository {
     /**
      * @param id

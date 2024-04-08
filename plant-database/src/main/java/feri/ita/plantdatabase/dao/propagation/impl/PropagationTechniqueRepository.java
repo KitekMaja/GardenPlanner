@@ -2,9 +2,13 @@ package feri.ita.plantdatabase.dao.propagation.impl;
 
 import feri.ita.plantdatabase.dao.propagation.IPropagationTechniqueRepository;
 import feri.ita.plantdatabase.dto.propagation.PropagationTechniqueDTO;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Repository
+@Transactional
 public class PropagationTechniqueRepository implements IPropagationTechniqueRepository {
     /**
      * @param id

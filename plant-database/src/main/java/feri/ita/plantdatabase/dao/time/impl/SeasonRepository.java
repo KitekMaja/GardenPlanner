@@ -2,9 +2,13 @@ package feri.ita.plantdatabase.dao.time.impl;
 
 import feri.ita.plantdatabase.dao.time.ISeasonRepository;
 import feri.ita.plantdatabase.dto.time.SeasonDTO;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Repository
+@Transactional
 public class SeasonRepository implements ISeasonRepository {
     /**
      * @param id

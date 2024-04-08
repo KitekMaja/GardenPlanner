@@ -2,9 +2,13 @@ package feri.ita.plantdatabase.dao.soil.impl;
 
 import feri.ita.plantdatabase.dao.soil.ISoilTypeRepository;
 import feri.ita.plantdatabase.dto.soil.SoilDTO;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Repository
+@Transactional
 public class SoilTypeRepository implements ISoilTypeRepository {
     /**
      * @param id

@@ -2,9 +2,12 @@ package feri.ita.plantdatabase.dao.hardiness_zones.impl;
 
 import feri.ita.plantdatabase.dao.hardiness_zones.IHardinessZoneRepository;
 import feri.ita.plantdatabase.dto.hardiness_zones.HardinessZoneDTO;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
+@Repository
+@Transactional
 public class HardinessZoneRepository implements IHardinessZoneRepository {
     /**
      * @param id
