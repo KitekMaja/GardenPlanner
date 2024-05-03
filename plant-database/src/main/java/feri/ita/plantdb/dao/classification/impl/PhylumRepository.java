@@ -2,6 +2,7 @@ package feri.ita.plantdb.dao.classification.impl;
 
 import feri.ita.plantdb.dao.classification.IPhylumRepository;
 import feri.ita.plantdb.dto.classification.PhylumDTO;
+import feri.ita.plantdb.model.classification.PhylumModel;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,7 +33,7 @@ public class PhylumRepository implements IPhylumRepository {
      * @return
      */
     @Override
-    public PhylumDTO getPhylumByName(String name) {
+    public PhylumModel getPhylumByName(String name) {
         return null;
     }
 

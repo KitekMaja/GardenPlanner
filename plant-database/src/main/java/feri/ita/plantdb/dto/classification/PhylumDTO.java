@@ -1,4 +1,10 @@
 package feri.ita.plantdb.dto.classification;
 
-public record PhylumDTO(String phylumName) {
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class PhylumDTO {
+    private String phylumName;
 }

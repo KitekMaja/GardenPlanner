@@ -1,6 +1,7 @@
 package feri.ita.plantdb.dao.classification;
 
 import feri.ita.plantdb.dto.classification.FamilyDTO;
+import feri.ita.plantdb.model.classification.FamilyModel;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ public interface IFamilyRepository {
 
     FamilyDTO updateFamily(Long id);
 
-    FamilyDTO getFamilyByName(String name);
+    FamilyModel getFamilyByName(String name);
 
     void deleteFamily(Long id);
 

@@ -9,5 +9,5 @@ public interface IClassRepository {
     ClassModel addClass(ClassModel classModel);
     List<ClassModel> getClasses();
     ClassModel updateClass(Long id, ClassModel classModel);
-    void deleteClass(String id);
+    void deleteClass(String name);
 }

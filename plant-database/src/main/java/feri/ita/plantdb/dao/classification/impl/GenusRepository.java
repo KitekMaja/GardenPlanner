@@ -2,6 +2,7 @@ package feri.ita.plantdb.dao.classification.impl;
 
 import feri.ita.plantdb.dao.classification.IGenusRepository;
 import feri.ita.plantdb.dto.classification.GenusDTO;
+import feri.ita.plantdb.model.classification.GenusModel;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,7 +33,7 @@ public class GenusRepository implements IGenusRepository {
      * @return
      */
     @Override
-    public GenusDTO getGenusByName(String name) {
+    public GenusModel getGenusByName(String name) {
         return null;
     }
 

@@ -1,6 +1,7 @@
 package feri.ita.plantdb.dao.classification;
 
 import feri.ita.plantdb.dto.classification.GenusDTO;
+import feri.ita.plantdb.model.classification.GenusModel;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ public interface IGenusRepository {
 
     GenusDTO getGenusById(Long id);
 
-    GenusDTO getGenusByName(String name);
+    GenusModel getGenusByName(String name);
 
     void addGenus(GenusDTO genusDTO);
 

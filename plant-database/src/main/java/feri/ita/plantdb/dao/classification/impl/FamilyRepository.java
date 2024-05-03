@@ -2,6 +2,7 @@ package feri.ita.plantdb.dao.classification.impl;
 
 import feri.ita.plantdb.dao.classification.IFamilyRepository;
 import feri.ita.plantdb.dto.classification.FamilyDTO;
+import feri.ita.plantdb.model.classification.FamilyModel;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,7 +42,7 @@ public class FamilyRepository implements IFamilyRepository {
      * @return
      */
     @Override
-    public FamilyDTO getFamilyByName(String name) {
+    public FamilyModel getFamilyByName(String name) {
         return null;
     }
 

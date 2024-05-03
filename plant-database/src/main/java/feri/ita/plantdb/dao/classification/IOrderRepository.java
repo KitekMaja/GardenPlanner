@@ -1,6 +1,7 @@
 package feri.ita.plantdb.dao.classification;
 
 import feri.ita.plantdb.dto.classification.OrderDTO;
+import feri.ita.plantdb.model.classification.OrderModel;
 
 import java.util.List;
 
@@ -9,7 +10,7 @@ public interface IOrderRepository {
 
     OrderDTO getOrderById(Long id);
 
-    OrderDTO getOrderByName(String name);
+    OrderModel getOrderByName(String name);
 
     void addOrder(OrderDTO orderDTO);
 

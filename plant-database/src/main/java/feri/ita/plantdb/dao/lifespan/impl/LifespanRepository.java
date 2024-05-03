@@ -31,7 +31,7 @@ public class LifespanRepository implements ILifespanRepository {
      * @param lifespanDTO
      */
     @Override
-    public void addHardinessZone(LifespanDTO lifespanDTO) {
+    public void addLifeSpan(LifespanDTO lifespanDTO) {
 
     }
 

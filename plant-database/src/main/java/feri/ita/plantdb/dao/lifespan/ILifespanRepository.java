@@ -7,7 +7,7 @@ import java.util.List;
 public interface ILifespanRepository {
     LifespanDTO getLifespanById(Long id);
     LifespanDTO getLifespanByName(String name);
-    void addHardinessZone(LifespanDTO lifespanDTO);
+    void addLifeSpan(LifespanDTO lifespanDTO);
     List<LifespanDTO> getLifespans();
     LifespanDTO updateLifespan(Long id);
     void deleteLifespan(Long id);
