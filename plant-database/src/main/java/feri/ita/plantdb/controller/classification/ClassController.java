@@ -26,7 +26,7 @@ public class ClassController {
      * Retrieves a list of all ClassDTO objects.
      *
      * @return a ResponseEntity containing a list of ClassDTO objects with HTTP status 200 OK
-     *         or an empty list if no classes are found with HTTP status 500 Internal Server Error
+     * or an empty list if no classes are found, or HTTP status 500 Internal Server Error if there is an unknown error during retrieval
      */
     @GetMapping("/getAllClasses")
     public ResponseEntity<List<ClassDTO>> getAllClassDTOs() {
@@ -44,8 +44,8 @@ public class ClassController {
      *
      * @param name the name of the ClassDTO object to retrieve
      * @return a ResponseEntity containing the ClassDTO object with HTTP status 200 OK
-     *         if found, or HTTP status 404 Not Found if not found
-     *         or HTTP status 500 Internal Server Error if an error occurs
+     * if found, or HTTP status 404 Not Found if not found
+     * or HTTP status 500 Internal Server Error if an error occurs
      */
     @GetMapping("/getClassByName")
     public ResponseEntity<ClassDTO> getClassDTOByName(@RequestParam String name) {
@@ -65,8 +65,8 @@ public class ClassController {
      *
      * @param classDTO the ClassDTO object to add
      * @return a ResponseEntity containing the added ClassDTO object with HTTP status 200 OK
-     *         or HTTP status 409 Conflict if a conflict occurs
-     *         or HTTP status 500 Internal Server Error if an error occurs
+     * or HTTP status 409 Conflict if a conflict occurs
+     * or HTTP status 500 Internal Server Error if an error occurs
      */
     @PostMapping("/addClass")
     public ResponseEntity<ClassDTO> addClass(@RequestBody ClassDTO classDTO) {
@@ -87,8 +87,8 @@ public class ClassController {
      * @param className the name of the ClassDTO object to modify
      * @param classDTO  the updated ClassDTO object
      * @return a ResponseEntity containing the updated ClassDTO object with HTTP status 200 OK
-     *         or HTTP status 404 Not Found if the class with the given name is not found
-     *         or HTTP status 500 Internal Server Error if an error occurs
+     * or HTTP status 404 Not Found if the class with the given name is not found
+     * or HTTP status 500 Internal Server Error if an error occurs
      */
     @PutMapping("/modifyClass")
     public ResponseEntity<ClassDTO> updateClass(@RequestParam String className, @RequestBody ClassDTO classDTO) {
@@ -108,8 +108,8 @@ public class ClassController {
      *
      * @param className the name of the ClassDTO object to delete
      * @return a ResponseEntity with HTTP status 200 OK if the deletion is successful
-     *         or HTTP status 404 Not Found if the class with the given name is not found
-     *         or HTTP status 500 Internal Server Error if an error occurs
+     * or HTTP status 404 Not Found if the class with the given name is not found
+     * or HTTP status 500 Internal Server Error if an error occurs
      */
     @DeleteMapping("/deleteClass")
     public ResponseEntity<Void> deleteClass(@RequestParam String className) {

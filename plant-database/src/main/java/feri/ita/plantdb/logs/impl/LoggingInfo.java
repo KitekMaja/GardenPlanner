@@ -29,7 +29,7 @@ public class LoggingInfo implements ILoggingInfo{
      */
     @Override
     public void errorEntityNotFound(String entityName) {
-        LOG.info("Entity [{}] with name [{}] not found.", LOG.getName(), entityName);
+        LOG.error("Entity [{}] with name [{}] not found.", LOG.getName(), entityName);
     }
 
     /**
@@ -37,6 +37,6 @@ public class LoggingInfo implements ILoggingInfo{
      */
     @Override
     public void errorEntityAlreadyExists(String entityName) {
-        LOG.info("Entity [{}] with name [{}] already exists.", LOG.getName(), entityName);
+        LOG.error("Entity [{}] with name [{}] already exists.", LOG.getName(), entityName);
     }
 }

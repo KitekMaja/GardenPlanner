@@ -1,8 +1,9 @@
 package feri.ita.plantdb.dao.classification.impl;
 
 import feri.ita.plantdb.dao.classification.IFamilyRepository;
-import feri.ita.plantdb.dto.classification.FamilyDTO;
 import feri.ita.plantdb.model.classification.FamilyModel;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,54 +12,70 @@ import java.util.List;
 @Repository
 @Transactional
 public class FamilyRepository implements IFamilyRepository {
-    /**
-     * @param id
-     * @return
-     */
-    @Override
-    public FamilyDTO getFamilyById(Long id) {
-        return null;
+    private final EntityManager entityManager;
+
+    public FamilyRepository(EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
 
     /**
-     * @param family
+     * Adds a new FamilyModel entity to the database.
+     *
+     * @param family the FamilyModel entity to add
+     * @return the added FamilyModel entity
      */
     @Override
-    public void createFamily(FamilyDTO family) {
-
+    public FamilyModel createFamily(FamilyModel family) {
+        entityManager.persist(family);
+        return entityManager.find(FamilyModel.class, family.getFamilyId());
     }
 
     /**
-     * @param id
-     * @return
+     * Updates a FamilyModel entity in the database based on the given ID.
+     *
+     * @param id     the ID of the FamilyModel entity to update
+     * @param family the updated FamilyModel entity
+     * @return the updated FamilyModel entity
      */
     @Override
-    public FamilyDTO updateFamily(Long id) {
-        return null;
+    public FamilyModel updateFamily(Long id, FamilyModel family) {
+        entityManager.createQuery("UPDATE FamilyModel f SET f.familyName = :familyName WHERE f.familyId = :familyId").setParameter("familyName", family.getFamilyName()).setParameter("familyId", id).executeUpdate();
+        return entityManager.find(FamilyModel.class, id);
     }
 
     /**
-     * @param name
-     * @return
+     * Retrieves a FamilyModel entity from the database by its name.
+     *
+     * @param name the name of the FamilyModel entity to retrieve
+     * @return the FamilyModel entity if found, or null if not found
      */
     @Override
     public FamilyModel getFamilyByName(String name) {
-        return null;
+        try {
+            return entityManager.createQuery("SELECT f FROM FamilyModel f WHERE f.familyName = :name", FamilyModel.class).setParameter("name", name).getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
-     * @param id
+     * Deletes a FamilyModel entity from the database.
+     *
+     * @param family the FamilyModel entity to delete
      */
     @Override
-    public void deleteFamily(Long id) {
-
+    public void deleteFamily(FamilyModel family) {
+        entityManager.remove(family);
     }
 
     /**
-     * @return
+     * Retrieves a list of all FamilyModel entities from the database.
+     *
+     * @return a list of all FamilyModel entities
      */
     @Override
-    public List<FamilyDTO> getFamilies() {
-        return null;
+    public List<FamilyModel> getFamilies() {
+        return entityManager.createQuery("SELECT f FROM FamilyModel f", FamilyModel.class).getResultList();
+
     }
 }
