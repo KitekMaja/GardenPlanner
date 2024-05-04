@@ -4,8 +4,6 @@ import feri.ita.plantdb.dao.classification.IClassRepository;
 import feri.ita.plantdb.model.classification.ClassModel;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,7 +13,6 @@ import java.util.List;
 @Transactional
 public class ClassRepository implements IClassRepository {
 
-    private static final Logger log = LoggerFactory.getLogger(ClassRepository.class);
     private final EntityManager entityManager;
 
     public ClassRepository(EntityManager entityManager) {
@@ -23,8 +20,10 @@ public class ClassRepository implements IClassRepository {
     }
 
     /**
-     * @param name
-     * @return
+     * Retrieves a ClassModel entity from the database by its name.
+     *
+     * @param name the name of the ClassModel entity to retrieve
+     * @return the ClassModel entity if found, or null if not found
      */
     @Override
     public ClassModel getClassByName(String name) {
@@ -36,8 +35,10 @@ public class ClassRepository implements IClassRepository {
     }
 
     /**
-     * @param classModel
-     * @return
+     * Adds a new ClassModel entity to the database.
+     *
+     * @param classModel the ClassModel entity to add
+     * @return the added ClassModel entity
      */
     @Override
     public ClassModel addClass(ClassModel classModel) {
@@ -46,7 +47,9 @@ public class ClassRepository implements IClassRepository {
     }
 
     /**
-     * @return List<ClassModel> of all classes
+     * Retrieves a list of all ClassModel entities from the database.
+     *
+     * @return a list of all ClassModel entities
      */
     @Override
     public List<ClassModel> getClasses() {
@@ -54,9 +57,11 @@ public class ClassRepository implements IClassRepository {
     }
 
     /**
-     * @param id
-     * @param classModel
-     * @return
+     * Updates a ClassModel entity in the database based on the given ID.
+     *
+     * @param id         the ID of the ClassModel entity to update
+     * @param classModel the updated ClassModel entity
+     * @return the updated ClassModel entity
      */
     @Override
     public ClassModel updateClass(Long id, ClassModel classModel) {
@@ -65,10 +70,12 @@ public class ClassRepository implements IClassRepository {
     }
 
     /**
-     * @param className
+     * Deletes a ClassModel entity from the database.
+     *
+     * @param classModel the ClassModel entity to delete
      */
     @Override
-    public void deleteClass(String className) {
-        entityManager.createQuery("DELETE FROM ClassModel c WHERE c.className =:className", ClassModel.class).setParameter("className", className);
+    public void deleteClass(ClassModel classModel) {
+        entityManager.remove(classModel);
     }
 }
