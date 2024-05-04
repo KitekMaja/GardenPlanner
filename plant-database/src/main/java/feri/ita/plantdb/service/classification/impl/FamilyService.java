@@ -1,6 +1,5 @@
 package feri.ita.plantdb.service.classification.impl;
 
-import feri.ita.plantdb.dao.classification.IClassRepository;
 import feri.ita.plantdb.dao.classification.IFamilyRepository;
 import feri.ita.plantdb.dto.classification.ClassDTO;
 import feri.ita.plantdb.dto.classification.FamilyDTO;
@@ -32,8 +31,7 @@ public class FamilyService {
      *
      * @return a list of all FamilyDTO objects
      */
-    public List<FamilyDTO> getAllFamilyDTOs()
-    {
+    public List<FamilyDTO> getAllFamilyDTOs() {
         logger.logInfoRetrieveAll();
         List<FamilyModel> families = familyRepository.getFamilies();
         return families.stream().map(this::convertToDTO).collect(Collectors.toList());
@@ -46,8 +44,7 @@ public class FamilyService {
      * @return the FamilyDTO object if found, or null if not found
      * @throws ClassificationException if the FamilyDTO object with the given name is not found
      */
-    public FamilyDTO getFamilyDTOByName(String familyName)
-    {
+    public FamilyDTO getFamilyDTOByName(String familyName) {
         logger.logInfoRetrieveSpecific(familyName);
         FamilyModel family = familyRepository.getFamilyByName(familyName);
         if (family == null) {
@@ -64,12 +61,10 @@ public class FamilyService {
      * @return the added FamilyDTO object
      * @throws ClassificationException if a FamilyDTO object with the same name already exists
      */
-    public FamilyDTO addFamily(FamilyDTO familyDTO)
-    {
+    public FamilyDTO addFamily(FamilyDTO familyDTO) {
         FamilyModel familyModel = convertDTOToModel(familyDTO);
         FamilyModel exists = familyRepository.getFamilyByName(familyModel.getFamilyName());
-        if (exists!=null)
-        {
+        if (exists != null) {
             logger.errorEntityAlreadyExists(exists.getFamilyName());
             throw new ClassificationException(FAMILY_ALREADY_EXISTS, exists.getFamilyName());
         }
@@ -85,11 +80,9 @@ public class FamilyService {
      * @return the updated FamilyDTO object
      * @throws ClassificationException if the FamilyDTO object with the given name is not found
      */
-    public FamilyDTO updateFamily(String familyName, FamilyDTO familyDTO)
-    {
+    public FamilyDTO updateFamily(String familyName, FamilyDTO familyDTO) {
         FamilyModel familyByName = familyRepository.getFamilyByName(familyName);
-        if (familyByName == null)
-        {
+        if (familyByName == null) {
             logger.errorEntityNotFound(familyName);
             throw new ClassificationException(FAMILY_NOT_FOUND, familyName);
         }
@@ -104,16 +97,13 @@ public class FamilyService {
      * @param familyName the name of the FamilyDTO object to delete
      * @throws ClassificationException if the FamilyDTO object with the given name is not found
      */
-    public FamilyDTO deleteFamily(String familyName)
-    {
+    public void deleteFamily(String familyName) {
         FamilyModel familyByName = familyRepository.getFamilyByName(familyName);
-        if (familyByName == null)
-        {
+        if (familyByName == null) {
             logger.errorEntityNotFound(familyName);
             throw new ClassificationException(FAMILY_NOT_FOUND, familyName);
         }
         familyRepository.deleteFamily(familyByName);
-        return null;
     }
 
 
