@@ -15,6 +15,8 @@ public class ClassificationModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "classification_id")
     private Long classificationId;
+    @Column(name = "classification_name")
+    private String classificationName;
     @OneToOne
     @JoinColumn(name = "genus_id", referencedColumnName = "genus_id")
     private GenusModel genus;

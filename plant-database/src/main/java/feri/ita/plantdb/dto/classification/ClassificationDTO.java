@@ -6,6 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ClassificationDTO {
+    private String classificationName;
     private String phylumName;
     private String className;
     private String orderName;

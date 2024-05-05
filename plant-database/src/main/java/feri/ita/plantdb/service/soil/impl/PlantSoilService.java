@@ -1,4 +1,7 @@
 package feri.ita.plantdb.service.soil.impl;
 
-public class PlantSoilService {
+import feri.ita.plantdb.dto.classification.ClassDTO;
+import feri.ita.plantdb.service.IEntityService;
+
+public class PlantSoilService implements IEntityService<ClassDTO> {
 }
