@@ -1,16 +1,15 @@
 package feri.ita.plantdb.service.impl.classification;
 
 import feri.ita.plantdb.dao.impl.classification.FamilyRepository;
-import feri.ita.plantdb.dto.classification.ClassDTO;
 import feri.ita.plantdb.dto.classification.FamilyDTO;
 import feri.ita.plantdb.exception.ClassificationException;
-import feri.ita.plantdb.logs.impl.LoggingInfo;
 import feri.ita.plantdb.model.classification.FamilyModel;
 import feri.ita.plantdb.service.IEntityService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,7 +19,8 @@ public class FamilyService implements IEntityService<FamilyDTO> {
      */
     private static final String FAMILY_NOT_FOUND = "Family with name [%s] not found.";
     private static final String FAMILY_ALREADY_EXISTS = "Family with name [%s] already exists.";
-    private final LoggingInfo logger = new LoggingInfo(ClassDTO.class);
+
+    private final Logger log = LoggerFactory.getLogger(FamilyService.class);
     private final FamilyRepository familyRepository;
 
     public FamilyService(FamilyRepository familyRepository) {
@@ -34,7 +34,6 @@ public class FamilyService implements IEntityService<FamilyDTO> {
      */
     @Override
     public List<FamilyDTO> getAll() {
-        logger.logInfoRetrieveAll();
         List<FamilyModel> families = familyRepository.retrieveAllFromDatabase();
         return families.stream().map(this::convertToDTO).collect(Collectors.toList());
     }
@@ -52,10 +51,11 @@ public class FamilyService implements IEntityService<FamilyDTO> {
         FamilyModel familyModel = convertDTOToModel(familyDTO);
         FamilyModel exists = familyRepository.getFamilyByName(familyModel.getFamilyName());
         if (exists != null) {
-            logger.errorEntityAlreadyExists(exists.getFamilyName());
             throw new ClassificationException(FAMILY_ALREADY_EXISTS, exists.getFamilyName());
         }
+        log.info("Adding FamilyDTO");
         FamilyModel savedFamily = familyRepository.addEntityToDatabase(familyModel);
+        log.info("Entity Added to database");
         return convertToDTO(savedFamily);
     }
 
@@ -69,7 +69,6 @@ public class FamilyService implements IEntityService<FamilyDTO> {
     public void deleteByName(String familyName) {
         FamilyModel familyByName = familyRepository.getFamilyByName(familyName);
         if (familyByName == null) {
-            logger.errorEntityNotFound(familyName);
             throw new ClassificationException(FAMILY_NOT_FOUND, familyName);
         }
         familyRepository.removeEntityFromDatabase(familyByName);
@@ -95,8 +94,6 @@ public class FamilyService implements IEntityService<FamilyDTO> {
      */
     private FamilyModel convertDTOToModel(FamilyDTO familyDTO) {
         FamilyModel familyModel = new FamilyModel();
-        Long uniqueId = Math.abs(UUID.randomUUID().getLeastSignificantBits());
-        familyModel.setFamilyId(uniqueId);
         familyModel.setFamilyName(familyDTO.getFamilyName());
         return familyModel;
     }

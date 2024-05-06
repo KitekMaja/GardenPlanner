@@ -3,13 +3,11 @@ package feri.ita.plantdb.service.impl.classification;
 import feri.ita.plantdb.dao.impl.classification.PhylumRepository;
 import feri.ita.plantdb.dto.classification.PhylumDTO;
 import feri.ita.plantdb.exception.ClassificationException;
-import feri.ita.plantdb.logs.impl.LoggingInfo;
 import feri.ita.plantdb.model.classification.PhylumModel;
 import feri.ita.plantdb.service.IEntityService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,7 +17,6 @@ public class PhylumService implements IEntityService<PhylumDTO> {
      */
     private static final String PHYLUM_NOT_FOUND = "Phylum with name [%s] not found.";
     private static final String PHYLUM_ALREADY_EXISTS = "Phylum with name [%s] already exists.";
-    private final LoggingInfo logger = new LoggingInfo(PhylumDTO.class);
     private final PhylumRepository phylumRepository;
 
     public PhylumService(PhylumRepository phylumRepository) {
@@ -33,7 +30,6 @@ public class PhylumService implements IEntityService<PhylumDTO> {
      */
     @Override
     public List<PhylumDTO> getAll() {
-        logger.logInfoRetrieveAll();
         List<PhylumModel> phylums = phylumRepository.retrieveAllFromDatabase();
         return phylums.stream().map(this::convertToDTO).collect(Collectors.toList());
     }
@@ -50,7 +46,6 @@ public class PhylumService implements IEntityService<PhylumDTO> {
         PhylumModel phylumModel = convertDTOToModel(entity);
         PhylumModel existing = phylumRepository.getPhylumByName(phylumModel.getPhylumName());
         if (existing != null) {
-            logger.errorEntityAlreadyExists(existing.getPhylumName());
             throw new ClassificationException(PHYLUM_ALREADY_EXISTS, existing.getPhylumName());
         }
         PhylumModel added = phylumRepository.addEntityToDatabase(phylumModel);
@@ -67,7 +62,6 @@ public class PhylumService implements IEntityService<PhylumDTO> {
     public void deleteByName(String name) {
         PhylumModel phylumByName = phylumRepository.getPhylumByName(name);
         if (phylumByName == null) {
-            logger.errorEntityNotFound(name);
             throw new ClassificationException(PHYLUM_NOT_FOUND, name);
         }
         phylumRepository.removeEntityFromDatabase(phylumByName);
@@ -93,8 +87,6 @@ public class PhylumService implements IEntityService<PhylumDTO> {
      */
     private PhylumModel convertDTOToModel(PhylumDTO phylumDTO) {
         PhylumModel phylumModel = new PhylumModel();
-        Long uniqueId = Math.abs(UUID.randomUUID().getLeastSignificantBits());
-        phylumModel.setPhylumId(uniqueId);
         phylumModel.setPhylumName(phylumDTO.getPhylumName());
         return phylumModel;
     }
