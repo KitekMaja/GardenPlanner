@@ -4,6 +4,8 @@ import feri.ita.plantdb.dao.IEntityRepository;
 import feri.ita.plantdb.model.classification.FamilyModel;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +15,8 @@ import java.util.List;
 @Transactional
 public class FamilyRepository implements IEntityRepository<FamilyModel> {
     private final EntityManager entityManager;
+
+    private final Logger log = LoggerFactory.getLogger(FamilyRepository.class);
 
     public FamilyRepository(EntityManager entityManager) {
         this.entityManager = entityManager;
@@ -26,7 +30,13 @@ public class FamilyRepository implements IEntityRepository<FamilyModel> {
      */
     @Override
     public FamilyModel addEntityToDatabase(FamilyModel family) {
-        entityManager.persist(family);
+
+        log.info("Adding family: {}", family.getFamilyName());
+        try {
+            entityManager.persist(family);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
         return entityManager.find(FamilyModel.class, family.getFamilyId());
     }
 

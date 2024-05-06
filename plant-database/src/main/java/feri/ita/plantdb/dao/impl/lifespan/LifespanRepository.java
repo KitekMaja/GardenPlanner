@@ -1,21 +1,20 @@
-package feri.ita.plantdb.dao.soil.impl;
+package feri.ita.plantdb.dao.impl.lifespan;
 
-import feri.ita.plantdb.dao.soil.ISoilTypeRepository;
-import feri.ita.plantdb.dto.soil.SoilDTO;
+import feri.ita.plantdb.dao.impl.lifespan.impl.ILifespanRepository;
+import feri.ita.plantdb.dto.lifespan.LifespanDTO;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
 @Repository
 @Transactional
-public class SoilTypeRepository implements ISoilTypeRepository {
+public class LifespanRepository implements ILifespanRepository {
     /**
      * @param id
      * @return
      */
     @Override
-    public SoilDTO getSoilTypeById(Long id) {
+    public LifespanDTO getLifespanById(Long id) {
         return null;
     }
 
@@ -24,15 +23,15 @@ public class SoilTypeRepository implements ISoilTypeRepository {
      * @return
      */
     @Override
-    public SoilDTO getSoilTypeByName(String name) {
+    public LifespanDTO getLifespanByName(String name) {
         return null;
     }
 
     /**
-     * @param soilTypeDTO
+     * @param lifespanDTO
      */
     @Override
-    public void addSoilType(SoilDTO soilTypeDTO) {
+    public void addLifeSpan(LifespanDTO lifespanDTO) {
 
     }
 
@@ -40,7 +39,7 @@ public class SoilTypeRepository implements ISoilTypeRepository {
      * @return
      */
     @Override
-    public List<SoilDTO> getAllSoilTypes() {
+    public List<LifespanDTO> getLifespans() {
         return null;
     }
 
@@ -49,7 +48,7 @@ public class SoilTypeRepository implements ISoilTypeRepository {
      * @return
      */
     @Override
-    public SoilDTO updateSoilType(Long id) {
+    public LifespanDTO updateLifespan(Long id) {
         return null;
     }
 
@@ -57,7 +56,7 @@ public class SoilTypeRepository implements ISoilTypeRepository {
      * @param id
      */
     @Override
-    public void deleteSoilType(Long id) {
+    public void deleteLifespan(Long id) {
 
     }
 }
