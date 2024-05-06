@@ -3,13 +3,11 @@ package feri.ita.plantdb.service.impl.classification;
 import feri.ita.plantdb.dao.impl.classification.OrderRepository;
 import feri.ita.plantdb.dto.classification.OrderDTO;
 import feri.ita.plantdb.exception.ClassificationException;
-import feri.ita.plantdb.logs.impl.LoggingInfo;
 import feri.ita.plantdb.model.classification.OrderModel;
 import feri.ita.plantdb.service.IEntityService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,7 +18,6 @@ public class OrderService implements IEntityService<OrderDTO> {
      */
     private static final String ORDER_NOT_FOUND = "Order with name [%s] not found.";
     private static final String ORDER_ALREADY_EXISTS = "Order with name [%s] already exists.";
-    private final LoggingInfo logger = new LoggingInfo(OrderDTO.class);
     private final OrderRepository orderRepository;
 
     public OrderService(OrderRepository orderRepository) {
@@ -34,7 +31,6 @@ public class OrderService implements IEntityService<OrderDTO> {
      */
     @Override
     public List<OrderDTO> getAll() {
-        logger.logInfoRetrieveAll();
         List<OrderModel> orders = orderRepository.retrieveAllFromDatabase();
         return orders.stream().map(this::convertToDTO).collect(Collectors.toList());
     }
@@ -50,9 +46,7 @@ public class OrderService implements IEntityService<OrderDTO> {
     public OrderDTO add(OrderDTO entity) {
         OrderModel model = convertDTOToModel(entity);
         OrderModel existing = orderRepository.getOrderByName(model.getOrderName());
-        if(existing!=null)
-        {
-            logger.errorEntityAlreadyExists(existing.getOrderName());
+        if (existing != null) {
             throw new ClassificationException(ORDER_ALREADY_EXISTS, existing.getOrderName());
         }
         OrderModel savedOrder = orderRepository.addEntityToDatabase(model);
@@ -68,9 +62,7 @@ public class OrderService implements IEntityService<OrderDTO> {
     @Override
     public void deleteByName(String name) {
         OrderModel model = orderRepository.getOrderByName(name);
-        if(model==null)
-        {
-            logger.errorEntityNotFound(name);
+        if (model == null) {
             throw new ClassificationException(ORDER_NOT_FOUND, name);
         }
         orderRepository.removeEntityFromDatabase(model);
@@ -96,8 +88,6 @@ public class OrderService implements IEntityService<OrderDTO> {
      */
     private OrderModel convertDTOToModel(OrderDTO orderDTO) {
         OrderModel orderModel = new OrderModel();
-        Long uniqueId = Math.abs(UUID.randomUUID().getLeastSignificantBits());
-        orderModel.setOrderId(uniqueId);
         orderModel.setOrderName(orderDTO.getOrderName());
         return orderModel;
     }

@@ -3,13 +3,13 @@ package feri.ita.plantdb.service.impl.classification;
 import feri.ita.plantdb.dao.impl.classification.*;
 import feri.ita.plantdb.dto.classification.ClassificationDTO;
 import feri.ita.plantdb.exception.ClassificationException;
-import feri.ita.plantdb.logs.impl.LoggingInfo;
-import feri.ita.plantdb.model.classification.*;
+import feri.ita.plantdb.model.classification.ClassificationModel;
 import feri.ita.plantdb.service.IEntityService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,7 +31,6 @@ public class ClassificationService implements IEntityService<ClassificationDTO> 
     private final GenusRepository genusRepository;
     private final OrderRepository orderRepository;
     private final PhylumRepository phylumRepository;
-    private final LoggingInfo logger = new LoggingInfo(ClassificationDTO.class);
 
     public ClassificationService(ClassificationRepository classificationRepository, ClassRepository classRepository, FamilyRepository familyRepository, GenusRepository genusRepository, OrderRepository orderRepository, PhylumRepository phylumRepository) {
         this.classificationRepository = classificationRepository;
@@ -49,7 +48,6 @@ public class ClassificationService implements IEntityService<ClassificationDTO> 
      */
     @Override
     public List<ClassificationDTO> getAll() {
-        logger.logInfoRetrieveAll();
         List<ClassificationModel> classifications = classificationRepository.retrieveAllFromDatabase();
         return classifications.stream().map(this::convertToDTO).collect(Collectors.toList());
     }
@@ -76,7 +74,6 @@ public class ClassificationService implements IEntityService<ClassificationDTO> 
     public void deleteByName(String name) {
         ClassificationModel model = classificationRepository.getClassificationByName(name);
         if (model == null) {
-            logger.errorEntityNotFound(name);
             throw new ClassificationException(CLASSIFICATION_NOT_FOUND, name);
         }
         classificationRepository.removeEntityFromDatabase(model);
@@ -92,7 +89,6 @@ public class ClassificationService implements IEntityService<ClassificationDTO> 
     public ClassificationDTO update(String name, ClassificationDTO entity) {
         ClassificationModel model = classificationRepository.getClassificationByName(name);
         if (model == null) {
-            logger.errorEntityNotFound(name);
             throw new ClassificationException(CLASSIFICATION_NOT_FOUND, name);
         }
         ClassificationModel updatedModel = classificationRepository.updateClassification(convertDTOToModel(entity));
@@ -102,33 +98,28 @@ public class ClassificationService implements IEntityService<ClassificationDTO> 
     /**
      * Retrieves classifications based on specified types.
      *
-     * @param genusName   The name of the genus to filter by. If empty, all genera are included.
-     * @param className   The name of the class to filter by. If empty, all classes are included.
-     * @param familyName  The name of the family to filter by. If empty, all families are included.
-     * @param orderName   The name of the order to filter by. If empty, all orders are included.
-     * @param phylumName  The name of the phylum to filter by. If empty, all phyla are included.
-     * @return            A list of ClassificationDTO objects that match the specified criteria.
+     * @param genusName  The name of the genus to filter by. If empty, all genera are included.
+     * @param className  The name of the class to filter by. If empty, all classes are included.
+     * @param familyName The name of the family to filter by. If empty, all families are included.
+     * @param orderName  The name of the order to filter by. If empty, all orders are included.
+     * @param phylumName The name of the phylum to filter by. If empty, all phyla are included.
+     * @return A list of ClassificationDTO objects that match the specified criteria.
      * @throws ClassificationException If any of the specified types are not found in the corresponding repositories.
      */
-    public List<ClassificationDTO> retrieveClassificationsByType(String genusName, String className, String familyName, String orderName, String phylumName)
-    {
-        if(!genusName.isEmpty() && genusRepository.getGenusByName(genusName) == null) {
+    public List<ClassificationDTO> retrieveClassificationsByType(String genusName, String className, String familyName, String orderName, String phylumName) {
+        if (!genusName.isEmpty() && genusRepository.getGenusByName(genusName) == null) {
             throw new ClassificationException(GENUS_NOT_FOUND, genusName);
         }
-        if(!className.isEmpty() && classRepository.getClassByName(className) == null)
-        {
+        if (!className.isEmpty() && classRepository.getClassByName(className) == null) {
             throw new ClassificationException(CLASS_NOT_FOUND, className);
         }
-        if(!familyName.isEmpty() && familyRepository.getFamilyByName(familyName) == null)
-        {
+        if (!familyName.isEmpty() && familyRepository.getFamilyByName(familyName) == null) {
             throw new ClassificationException(FAMILY_NOT_FOUND, familyName);
         }
-        if(!orderName.isEmpty() && orderRepository.getOrderByName(orderName) == null)
-        {
+        if (!orderName.isEmpty() && orderRepository.getOrderByName(orderName) == null) {
             throw new ClassificationException(ORDER_NOT_FOUND, orderName);
         }
-        if(!phylumName.isEmpty() && phylumRepository.getPhylumByName(phylumName) == null)
-        {
+        if (!phylumName.isEmpty() && phylumRepository.getPhylumByName(phylumName) == null) {
             throw new ClassificationException(PHYLUM_NOT_FOUND, phylumName);
         }
 
@@ -145,6 +136,7 @@ public class ClassificationService implements IEntityService<ClassificationDTO> 
      */
     private ClassificationDTO convertToDTO(ClassificationModel classificationModel) {
         ClassificationDTO classificationDTO = new ClassificationDTO();
+        classificationDTO.setClassificationName(classificationModel.getClassificationName());
         classificationDTO.setClassName(classificationModel.getClazz().getClassName());
         classificationDTO.setFamilyName(classificationModel.getFamily().getFamilyName());
         classificationDTO.setGenusName(classificationModel.getGenus().getGenusName());
@@ -161,8 +153,7 @@ public class ClassificationService implements IEntityService<ClassificationDTO> 
      */
     private ClassificationModel convertDTOToModel(ClassificationDTO classificationDTO) {
         ClassificationModel classificationModel = new ClassificationModel();
-        Long uniqueId = Math.abs(UUID.randomUUID().getLeastSignificantBits());
-        classificationModel.setClassificationId(uniqueId);
+        classificationModel.setClassificationName(classificationDTO.getClassificationName());
         classificationModel.setClazz(classRepository.getClassByName(classificationDTO.getClassName()));
         classificationModel.setFamily(familyRepository.getFamilyByName(classificationDTO.getFamilyName()));
         classificationModel.setGenus(genusRepository.getGenusByName(classificationDTO.getGenusName()));

@@ -3,13 +3,11 @@ package feri.ita.plantdb.service.impl.classification;
 import feri.ita.plantdb.dao.impl.classification.GenusRepository;
 import feri.ita.plantdb.dto.classification.GenusDTO;
 import feri.ita.plantdb.exception.ClassificationException;
-import feri.ita.plantdb.logs.impl.LoggingInfo;
 import feri.ita.plantdb.model.classification.GenusModel;
 import feri.ita.plantdb.service.IEntityService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,7 +18,6 @@ public class GenusService implements IEntityService<GenusDTO> {
      */
     private static final String GENUS_NOT_FOUND = "Genus with name [%s] not found.";
     private static final String GENUS_ALREADY_EXISTS = "Genus with name [%s] already exists.";
-    private final LoggingInfo logger = new LoggingInfo(GenusDTO.class);
     private final GenusRepository genusRepository;
 
     public GenusService(GenusRepository genusRepository) {
@@ -34,7 +31,6 @@ public class GenusService implements IEntityService<GenusDTO> {
      */
     @Override
     public List<GenusDTO> getAll() {
-        logger.logInfoRetrieveAll();
         List<GenusModel> genuses = genusRepository.retrieveAllFromDatabase();
         return genuses.stream().map(this::convertToDTO).collect(Collectors.toList());
     }
@@ -51,7 +47,6 @@ public class GenusService implements IEntityService<GenusDTO> {
         GenusModel model = convertDTOToModel(entity);
         GenusModel existing = genusRepository.getGenusByName(model.getGenusName());
         if (existing != null) {
-            logger.errorEntityAlreadyExists(existing.getGenusName());
             throw new ClassificationException(GENUS_ALREADY_EXISTS, existing.getGenusName());
         }
         GenusModel savedGenus = genusRepository.addEntityToDatabase(model);
@@ -68,7 +63,6 @@ public class GenusService implements IEntityService<GenusDTO> {
     public void deleteByName(String name) {
         GenusModel model = genusRepository.getGenusByName(name);
         if (model == null) {
-            logger.errorEntityNotFound(name);
             throw new ClassificationException(GENUS_NOT_FOUND, name);
         }
         genusRepository.removeEntityFromDatabase(model);
@@ -94,8 +88,6 @@ public class GenusService implements IEntityService<GenusDTO> {
      */
     private GenusModel convertDTOToModel(GenusDTO genusDTO) {
         GenusModel genusModel = new GenusModel();
-        Long uniqueId = Math.abs(UUID.randomUUID().getLeastSignificantBits());
-        genusModel.setGenusId(uniqueId);
         genusModel.setGenusName(genusDTO.getGenusName());
         return genusModel;
     }

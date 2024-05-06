@@ -3,9 +3,10 @@ package feri.ita.plantdb.service.impl.classification;
 import feri.ita.plantdb.dao.impl.classification.ClassRepository;
 import feri.ita.plantdb.dto.classification.ClassDTO;
 import feri.ita.plantdb.exception.ClassificationException;
-import feri.ita.plantdb.logs.impl.LoggingInfo;
 import feri.ita.plantdb.model.classification.ClassModel;
 import feri.ita.plantdb.service.IEntityService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,7 +19,8 @@ public class ClassService implements IEntityService<ClassDTO> {
      */
     private static final String CLASS_NOT_FOUND = "Class with name [%s] not found.";
     private static final String CLASS_ALREADY_EXISTS = "Class with name [%s] already exists.";
-    private final LoggingInfo logger = new LoggingInfo(ClassDTO.class);
+    private static final String RETRIEVING_ALL_CLASS = "Retrieving all classes.";
+    private final Logger logger = LoggerFactory.getLogger(ClassService.class);
     private final ClassRepository classRepository;
 
     public ClassService(ClassRepository classRepository) {
@@ -32,7 +34,6 @@ public class ClassService implements IEntityService<ClassDTO> {
      */
     @Override
     public List<ClassDTO> getAll() {
-        logger.logInfoRetrieveAll();
         List<ClassModel> classes = classRepository.retrieveAllFromDatabase();
         return classes.stream().map(this::convertToDTO).collect(Collectors.toList());
     }
@@ -49,7 +50,6 @@ public class ClassService implements IEntityService<ClassDTO> {
         ClassModel classModel = convertDTOToModel(entity);
         ClassModel existing = classRepository.getClassByName(classModel.getClassName());
         if (existing != null) {
-            logger.errorEntityAlreadyExists(existing.getClassName());
             throw new ClassificationException(CLASS_ALREADY_EXISTS, existing.getClassName());
         }
         ClassModel savedClass = classRepository.addEntityToDatabase(classModel);
@@ -66,7 +66,6 @@ public class ClassService implements IEntityService<ClassDTO> {
     public void deleteByName(String name) {
         ClassModel classByName = classRepository.getClassByName(name);
         if (classByName == null) {
-            logger.errorEntityNotFound(name);
             throw new ClassificationException(CLASS_NOT_FOUND, name);
         }
         classRepository.removeEntityFromDatabase(classByName);
