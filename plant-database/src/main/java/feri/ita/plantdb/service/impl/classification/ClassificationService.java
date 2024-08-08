@@ -18,7 +18,6 @@ public class ClassificationService implements IEntityService<ClassificationDTO> 
      * Exception messages
      */
     private static final String CLASSIFICATION_NOT_FOUND = "Classification with name [%s] not found.";
-    private static final String CLASSIFICATION_ALREADY_EXISTS = "Classification with name [%s] already exists.";
     private static final String CLASS_NOT_FOUND = "Class with name [%s] not found.";
     private static final String FAMILY_NOT_FOUND = "Family with name [%s] not found.";
     private static final String GENUS_NOT_FOUND = "Genus with name [%s] not found.";

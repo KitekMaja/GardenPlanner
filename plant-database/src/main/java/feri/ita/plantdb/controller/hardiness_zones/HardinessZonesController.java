@@ -6,4 +6,5 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/gp/pdb/hardiness_zones")
 public class HardinessZonesController {
+
 }
